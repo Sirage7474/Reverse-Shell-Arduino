@@ -13,7 +13,7 @@ This ruby script will:</br>
 
 Clone The Repository
 ```
-git clone https://github.com/Sirage7474/Reverse-Shell-Arduino.git
+https://github.com/Sirage7474/Reverse-Shell-Arduino.git
 ```
 
 Run
