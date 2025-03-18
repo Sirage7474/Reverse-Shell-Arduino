@@ -9,6 +9,7 @@ This ruby script will:</br>
 3. Generates a complete Arduino sketch that will download and execute the shell script</br>
 4. Run a default Apache webserver</br>
 5. Open a meterpreter listener</br>
+
 ## 📥 How to Install?
 
 Clone The Repository
@@ -25,8 +26,7 @@ cd Reverse-Shell-Arduino
 sudo ruby reverse-shell-arduino.rb
 ```
 
-
-
+### Tested on Kali Linux
 
 
 If you want to use other webserver, you can modify the arduino script later. Just change the URL.<br/>
