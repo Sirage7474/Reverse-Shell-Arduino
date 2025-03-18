@@ -22,8 +22,8 @@ cd Reverse-Shell-Arduino
 ```
 
 ```
-
-
+sudo ruby reverse-shell-arduino.rb
+```
 
 
 
