@@ -140,7 +140,7 @@ def arduino_setup(host)
   File.open('reverse_shell_arduino.txt', 'w') do |f|
     f.write(s)
   end
-  print_success("Arduino Sketch File Complete Please Find "reverse_shell_arduino.txt"\n")
+  print_success("Arduino Sketch File Complete Please Find 'reverse_shell_arduino.txt'\n")
 end
 
 def metasploit_setup(msf_path, host, port)
