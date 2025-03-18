@@ -33,3 +33,8 @@ If you want to use other webserver, you can modify the arduino script later. Jus
 
 This basic setup only works on LAN. If you want to try it using Internet, you need to configure a <b>Port Forwarding</b> or <b>DMZ</b> on your modem.
 
+## ❗ Disclaimer ❗
+
+## ⚠️ This project is intended for educational and legal security testing only. Misuse is strictly prohibited. The authors are not responsible for any unauthorized use.
+
+
