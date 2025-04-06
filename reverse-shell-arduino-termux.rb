@@ -163,7 +163,7 @@ end
 
 begin
   if File.exist?('/$PREFIX/bin/msfvenom/')
-    msf_path = '/$PREFIX/bin/'
+    msf_path = "#{ENV['PREFIX']}/bin/"
   elsif File.exist?('/opt/metasploit-framework/msfvenom')
     msf_path = ('/opt/metasploit-framework/')
   else
