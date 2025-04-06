@@ -1,12 +1,8 @@
 #!/usr/bin/env ruby
-
-Thanks to @mattifestation exploit-monday.com and Dave Kennedy.
-
-Works for Arduino Leonardo and others
-
-Code By @Sirage7474
-
-https://github.com/Sirage7474/Reverse-Shell-Arduino
+#Thanks to @mattifestation exploit-monday.com and Dave Kennedy.
+#Works for Arduino Leonardo and others
+#Code By @Sirage7474
+#https://github.com/Sirage7474/Reverse-Shell-Arduino
 
 require 'base64'
 require 'readline'
