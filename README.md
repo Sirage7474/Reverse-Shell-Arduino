@@ -26,6 +26,11 @@ cd Reverse-Shell-Arduino
 sudo ruby reverse-shell-arduino.rb
 ```
 
+If your on Termux
+```
+ruby reverse-shell-arduino-termux.rb
+```
+
 ### Tested on Kali Linux
 
 
